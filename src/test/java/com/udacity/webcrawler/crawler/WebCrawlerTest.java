@@ -20,10 +20,7 @@ class WebCrawlerTest {
 
         // SequentialWebCrawler constructor takes (PageParser, int maxDepth)
         SequentialWebCrawler seq = new SequentialWebCrawler(parser, 1);
-
-        // FIX: ParallelWebCrawler now takes three arguments (PageParser, maxDepth, timeoutSeconds)
         ParallelWebCrawler par = new ParallelWebCrawler(parser, 1, 5);
-
         assertThat(seq.crawl(List.of("a.com")).getWordCounts()).isEqualTo(par.crawl(List.of("a.com")).getWordCounts());
     }
 }

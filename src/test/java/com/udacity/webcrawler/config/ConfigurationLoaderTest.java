@@ -5,8 +5,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Set;
 
 class ConfigurationLoaderTest {
     @Test

@@ -15,8 +15,6 @@ class ParallelWebCrawlerTest {
     void maxDepthEnforced() throws Exception {
         // Change ParsedPage to Result and use the correct constructor signature
         PageParser parser = url -> new Result(Map.of("word",1), Set.of("b.com"));
-
-        // FIX: ParallelWebCrawler now takes three arguments (PageParser, maxDepth, timeoutSeconds)
         ParallelWebCrawler crawler = new ParallelWebCrawler(parser, 0, 5);
 
         var result = crawler.crawl(List.of("a.com"));

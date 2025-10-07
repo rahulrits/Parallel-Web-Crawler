@@ -5,7 +5,6 @@ import static com.google.common.truth.Truth.assertThat;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.time.Duration;
-import com.udacity.webcrawler.crawler.Profiled;
 
 class ProfilerImplTest {
 

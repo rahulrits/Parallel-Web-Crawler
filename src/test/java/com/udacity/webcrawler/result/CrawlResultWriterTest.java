@@ -2,8 +2,6 @@ package com.udacity.webcrawler.result;
 
 import org.junit.jupiter.api.Test;
 import static com.google.common.truth.Truth.assertThat;
-
-import java.io.StringWriter;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +18,6 @@ class CrawlResultWriterTest {
         // CrawlResult constructor: (ConcurrentMap<String, Integer>, Set<String>)
         CrawlResult result = new CrawlResult(concurrentWordCounts, Set.of("a.com"));
 
-        // FIX: Instantiate CrawlResultWriter with a dummy Path
         Path dummyPath = Path.of("test_output.json");
         CrawlResultWriter resultWriter = new CrawlResultWriter(dummyPath);
 

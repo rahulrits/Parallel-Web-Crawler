@@ -8,7 +8,6 @@ import com.udacity.webcrawler.di.WebCrawlerModule;
 import com.udacity.webcrawler.crawler.WebCrawler;
 import com.udacity.webcrawler.result.CrawlResult;
 import com.udacity.webcrawler.result.CrawlResultWriter;
-
 import java.io.InputStream;
 import java.nio.file.Path;
 
