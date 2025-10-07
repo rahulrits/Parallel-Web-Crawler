@@ -1,4 +1,4 @@
-package com.udacity.webcrawler;
+package com.udacity.webcrawler.main;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

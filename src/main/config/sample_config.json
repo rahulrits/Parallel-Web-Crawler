@@ -1,0 +1,14 @@
+{
+  "startPages": ["http://example.com"],
+  "ignoredUrls": [
+    "example\\.com\\/.*\\/\\d+"
+  ],
+  "ignoredWords": ["the", "a", "of", "to", "in"],
+  "parallelism": 4,
+  "implementationOverride": null,
+  "maxDepth": 2,
+  "timeoutSeconds": 5,
+  "popularWordCount": 10,
+  "profileOutputPath": null,
+  "resultPath": null
+}

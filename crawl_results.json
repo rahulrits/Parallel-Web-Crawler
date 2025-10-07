@@ -1,7 +1,7 @@
 {
-  "urlsVisited" : [ "https://www.udacity.com/", "http://example.com/about", "http://example.com/contact" ],
   "wordCounts" : {
     "webcrawler" : 6,
     "example" : 3
-  }
+  },
+  "urlsVisited" : [ "https://www.udacity.com/", "http://example.com/about", "http://example.com/contact" ]
 }

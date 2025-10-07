@@ -9,20 +9,21 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern; // Necessary import
 
 public class ParallelWebCrawler implements WebCrawler {
     private final PageParser parser;
     private final int maxDepth;
-    private final long deadline; // FIX: Add deadline field
+    private final long deadline;
+    private final List<Pattern> ignoredUrls; // Add Ignored URLs list
     private final Set<String> visited = ConcurrentHashMap.newKeySet();
     private final ConcurrentMap<String, Integer> wordCounts = new ConcurrentHashMap<>();
 
-    // FIX: Update constructor signature to accept timeoutSeconds
-    public ParallelWebCrawler(PageParser parser, int maxDepth, int timeoutSeconds) {
+    public ParallelWebCrawler(PageParser parser, int maxDepth, int timeoutSeconds, List<Pattern> ignoredUrls) {
         this.parser = parser;
         this.maxDepth = maxDepth;
-        // FIX: Calculate the deadline (in nanoseconds) upon creation
         this.deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(timeoutSeconds);
+        this.ignoredUrls = ignoredUrls; // Initialize ignoredUrls
     }
 
     @Override
@@ -35,6 +36,7 @@ public class ParallelWebCrawler implements WebCrawler {
         List<CrawlTask> tasks = new ArrayList<>();
         for (String url : startingUrls) tasks.add(new CrawlTask(url, 0));
 
+        // FIX: Revert to manual fork/join loop for initial tasks outside the ForkJoinTask context
         for (CrawlTask task : tasks) task.fork();
         for (CrawlTask task : tasks) task.join();
 
@@ -52,24 +54,36 @@ public class ParallelWebCrawler implements WebCrawler {
 
         @Override
         protected void compute() {
-            // FIX: Check if the deadline has passed (Timeout Logic)
             if (System.nanoTime() > deadline) {
                 return;
             }
 
             if (depth > maxDepth || !visited.add(url)) return;
 
+            if (ignoredUrls.stream().anyMatch(p -> p.matcher(url).matches())) {
+                return;
+            }
+
+            Result page;
             try {
-                Result page = parser.parse(url);
+                page = parser.parse(url);
+
+                if (System.nanoTime() > deadline) {
+                    return;
+                }
+
                 page.getWordCounts().forEach((k, v) -> wordCounts.merge(k, v, Integer::sum));
 
                 List<CrawlTask> subtasks = page.getLinks().stream()
+                        .filter(link -> System.nanoTime() <= deadline)
                         .map(link -> new CrawlTask(link, depth + 1))
                         .toList();
 
-                for (CrawlTask task : subtasks) task.fork();
-                for (CrawlTask task : subtasks) task.join();
-            } catch (Exception ignored) {}
+                // Correct: invokeAll() is available inside a RecursiveAction's compute()
+                invokeAll(subtasks);
+
+            } catch (Exception ignored) {
+            }
         }
     }
 }

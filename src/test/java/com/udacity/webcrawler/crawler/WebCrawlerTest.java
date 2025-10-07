@@ -7,9 +7,11 @@ import com.google.inject.Injector;
 import org.junit.jupiter.api.Test;
 import static com.google.common.truth.Truth.assertThat;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 class WebCrawlerTest {
     @Test
@@ -20,7 +22,10 @@ class WebCrawlerTest {
 
         // SequentialWebCrawler constructor takes (PageParser, int maxDepth)
         SequentialWebCrawler seq = new SequentialWebCrawler(parser, 1);
-        ParallelWebCrawler par = new ParallelWebCrawler(parser, 1, 5);
+
+        List<Pattern> ignoredUrls = Collections.emptyList();
+        ParallelWebCrawler par = new ParallelWebCrawler(parser, 1, 5, ignoredUrls);
+
         assertThat(seq.crawl(List.of("a.com")).getWordCounts()).isEqualTo(par.crawl(List.of("a.com")).getWordCounts());
     }
 }
