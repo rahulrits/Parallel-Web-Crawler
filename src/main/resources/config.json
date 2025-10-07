@@ -1,0 +1,12 @@
+{
+  "startPages": ["https://www.udacity.com/"],
+  "ignoredUrls": ["https://www.udacity.com/faq"],
+  "ignoredWords": ["the", "and", "of", "to", "a", "in"],
+  "parallelism": 8,
+  "implementationOverride": "PARALLEL",
+  "maxDepth": 3,
+  "timeoutSeconds": 10,
+  "popularWordCount": 50,
+  "profileOutputPath": "profile_output.txt",
+  "resultPath": "crawl_results.json"
+}
